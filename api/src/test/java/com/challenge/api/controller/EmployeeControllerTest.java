@@ -17,6 +17,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+/**
+ * Unit tests for EmployeeController REST endpoints.
+ * Validates HTTP request handling, response formats, and error scenarios.
+ */
 @WebMvcTest(EmployeeController.class)
 public class EmployeeControllerTest {
 
@@ -26,6 +30,10 @@ public class EmployeeControllerTest {
     @MockBean
     private EmployeeService employeeService;
 
+    /**
+     * Tests successful retrieval of all employees.
+     * @implNote Verifies GET /api/v1/employee returns 200 status and correct JSON array
+     */
     @Test
     public void testGetAllEmployees() throws Exception {
         EmployeeImp emp1 = new EmployeeImp();
@@ -44,6 +52,10 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$[1].firstName").value("Jane"));
     }
 
+    /**
+     * Tests error handling for getAllEmployees endpoint.
+     * @implNote Verifies service exceptions propagate as 500 Internal Server Error
+     */
     @Test
     public void testGetAllEmployeesFail() throws Exception {
         when(employeeService.getAllEmployees()).thenThrow(new RuntimeException("Error"));
@@ -51,6 +63,10 @@ public class EmployeeControllerTest {
         mockMvc.perform(get("/api/v1/employee")).andExpect(status().isInternalServerError());
     }
 
+    /**
+     * Tests successful retrieval of employee by UUID.
+     * @implNote Verifies GET /api/v1/employee/{uuid} returns correct employee data
+     */
     @Test
     public void testGetEmployeeByUuid() throws Exception {
         UUID testId = UUID.randomUUID();
@@ -66,6 +82,10 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$.uuid").value(testId.toString()));
     }
 
+    /**
+     * Tests error handling for non-existent employee UUID.
+     * @implNote Verifies appropriate error response when employee not found
+     */
     @Test
     public void testGetEmployeeByUuidFail() throws Exception {
         UUID testId = UUID.randomUUID();
@@ -74,6 +94,10 @@ public class EmployeeControllerTest {
         mockMvc.perform(get("/api/v1/employee/" + testId)).andExpect(status().isInternalServerError());
     }
 
+    /**
+     * Tests successful employee creation.
+     * @implNote Verifies POST /api/v1/employee accepts JSON and returns created employee
+     */
     @Test
     public void testCreateEmployee() throws Exception {
         EmployeeImp emp = new EmployeeImp();
@@ -90,6 +114,10 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$.lastName").value("Test"));
     }
 
+    /**
+     * Tests error handling for invalid employee creation.
+     * @implNote Verifies validation failures return appropriate error status
+     */
     @Test
     public void testCreateEmployeeFail() throws Exception {
         when(employeeService.createEmployee(any(Employee.class))).thenThrow(new RuntimeException("Bad data"));

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 /**
- * Fill in the missing aspects of this Spring Web REST Controller. Don't forget to add a Service layer.
+ * REST controller for employee management operations.
  */
 @RestController
 @RequestMapping("/api/v1/employee")
@@ -22,8 +22,9 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     /**
-     * @implNote Need not be concerned with an actual persistence layer. Generate mock Employee models as necessary.
-     * @return One or more Employees.
+     * Retrieves all employees from the system.
+     * @return List of all employees
+     * @throws ResponseStatusException 500 if service error occurs
      */
     @GetMapping
     public List<Employee> getAllEmployees() {
@@ -35,9 +36,10 @@ public class EmployeeController {
     }
 
     /**
-     * @implNote Need not be concerned with an actual persistence layer. Generate mock Employee model as necessary.
+     * Gets a specific employee by their unique identifier.
      * @param uuid Employee UUID
      * @return Requested Employee if exists
+     * @throws ResponseStatusException 400 for invalid UUID, 404 if not found, 500 for other errors
      */
     @GetMapping("/{uuid}")
     public Employee getEmployeeByUuid(@PathVariable UUID uuid) {
@@ -54,9 +56,10 @@ public class EmployeeController {
     }
 
     /**
-     * @implNote Need not be concerned with an actual persistence layer.
-     * @param requestBody hint!
+     * Creates a new employee in the system.
+     * @param requestBody Employee data to create
      * @return Newly created Employee
+     * @throws ResponseStatusException 500 if creation fails
      */
     @PostMapping
     public Employee createEmployee(@RequestBody EmployeeImp requestBody) {

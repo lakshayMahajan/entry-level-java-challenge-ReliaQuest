@@ -8,10 +8,16 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 
+/**
+ * Handles employee business logic and data operations.
+ */
 @Service
 public class EmployeeService {
     private List<Employee> database = new ArrayList<>();
 
+    /**
+     * Creates service with some test employees for demo purposes.
+     */
     public EmployeeService() {
         Employee emp1 = new EmployeeImp();
         emp1.setUuid(UUID.randomUUID());
@@ -39,10 +45,21 @@ public class EmployeeService {
         database.add(emp2);
     }
 
+    /**
+     * Returns all employees in the system.
+     * @return complete list of employees
+     */
     public List<Employee> getAllEmployees() {
         return database;
     }
 
+    /**
+     * Looks up an employee by their unique ID.
+     * @param uuid employee's unique identifier
+     * @return matching employee
+     * @throws IllegalArgumentException if uuid is null
+     * @throws RuntimeException when employee doesn't exist
+     */
     public Employee getEmployeeByUuid(UUID uuid) {
         if (uuid == null) {
             throw new IllegalArgumentException("UUID cannot be null");
@@ -53,6 +70,12 @@ public class EmployeeService {
                 .orElseThrow(() -> new RuntimeException("Employee not found with UUID: " + uuid));
     }
 
+    /**
+     * Adds a new employee to the system.
+     * @param employee employee data to store
+     * @return the saved employee (with generated UUID if needed)
+     * @implNote assigns UUID automatically if missing
+     */
     public Employee createEmployee(Employee employee) {
         if (employee == null) {
             throw new IllegalArgumentException("Employee cannot be null");

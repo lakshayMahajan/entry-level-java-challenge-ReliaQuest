@@ -3,6 +3,10 @@ package com.challenge.api.model;
 import java.time.Instant;
 import java.util.UUID;
 
+/**
+ * Basic implementation of Employee interface.
+ * Standard POJO with getters and setters for all employee fields.
+ */
 public class EmployeeImp implements Employee {
     private UUID uuid;
     private String firstName;
